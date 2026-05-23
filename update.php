@@ -30,7 +30,7 @@ $stmt->execute([
     $name,
     $phone,
     $email,
-    $bсio,
+    $bio,
     $_SESSION['id']
 ]);
 
