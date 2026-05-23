@@ -129,6 +129,3 @@ foreach ($langs as $l) {
 
 setcookie('save', '1', 1799913600);
 
-header("Location: index.php");
-exit();
-?>
