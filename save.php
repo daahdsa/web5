@@ -93,13 +93,20 @@ foreach ($langs as $l) {
     }
 }
 
+$login = 'user' . rand(1000,9999);
+
+$password = bin2hex(random_bytes(4));
+
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
 $stmt = $pdo->prepare("
 INSERT INTO applications
-(full_name, phone, email, birth_date, gender, bio, contract_accepted)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+(full_name, phone, email, birth_date, gender, bio,
+contract_accepted, login, password_hash)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
-$stmt->execute([$name, $phone, $email, $birth, $gender, $bio, 1]);
+$stmt->execute([$name, $phone, $email, $birth, $gender, $bio, 1, $login, $passwordHash]);
 
 $id = $pdo->lastInsertId();
 
@@ -107,6 +114,14 @@ $stmt = $pdo->prepare("
 INSERT INTO application_languages (application_id, language_id)
 VALUES (?, ?)
 ");
+
+echo "
+<h2>Данные сохранены</h2>
+
+<p>Ваш логин: <b>$login</b></p>
+<p>Ваш пароль: <b>$password</b></p>
+";
+exit();
 
 foreach ($langs as $l) {
     $stmt->execute([$id, $l]);
